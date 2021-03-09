@@ -18,6 +18,8 @@ function clone_to_dest ()
   tar -C $_SRC_DIR -cf - $_SRC_NAME | tar -C $_DEST -pxf -
   if [ ! $? -eq 0 ]
   then
+    echo
+    echo $(date +%Y-%m-%d-%H:%M)
     echo "ERROR: Failed to copy ${_SRC} to ${_DEST}"
   fi
 }
@@ -32,6 +34,8 @@ function remove_files ()
     rm $f
     if [ ! $? -eq 0 ]
     then
+      echo
+      echo $(date +%Y-%m-%d-%H:%M)
       echo "ERROR: Failed to delete $f"
     fi
   done
@@ -40,8 +44,6 @@ function remove_files ()
 #
 # Actions start here
 #
-echo
-echo $(date +%Y-%m-%d-%H:%M)
 
 for BUILD in $(ls -la ${MANIFESTS_DIR} | grep ^d | grep CDR | awk ' { print $9 } ') 
 do
@@ -54,6 +56,8 @@ do
   cd ${XML_DIR}/${BUILD}
   remove_files
   cd - > /dev/null
+  echo
+  echo $(date +%Y-%m-%d-%H:%M)
   echo == Remove ${MANIFESTS_DIR}/${BUILD}
   rm -rf ${MANIFESTS_DIR}/${BUILD}
   rm -f ${MANIFESTS_DIR}/${BUILD}.md5

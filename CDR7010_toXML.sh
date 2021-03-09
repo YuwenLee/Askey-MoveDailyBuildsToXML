@@ -64,12 +64,12 @@ function remove_files ()
 #
 # Action starts here
 #
-echo
-echo $(date +%Y-%m-%d-%H:%M)
 
 check_arg $0
 if [ ! -e ${MANIFESTS_DIR} ]
 then
+  echo
+  echo $(date +%Y-%m-%d-%H:%M)
   echo Error: ${MANIFESTS_DIR} does not exist.
   exit 1
 fi
@@ -77,6 +77,8 @@ fi
 mkdir -p ${XML_DIR}
 if [ ! -e ${XML_DIR} ]
 then
+  echo
+  echo $(date +%Y-%m-%d-%H:%M)
   echo Error: ${XML_DIR} does not exist.
   exit 1
 fi
@@ -92,6 +94,8 @@ do
   cd ${XML_DIR}/${BUILD}
   remove_files
   cd - > /dev/null
+  echo
+  echo $(date +%Y-%m-%d-%H:%M)
   echo == Remove ${MANIFESTS_DIR}/${BUILD}
   rm -rf ${MANIFESTS_DIR}/${BUILD}
   rm -f ${MANIFESTS_DIR}/${BUILD}.md5
