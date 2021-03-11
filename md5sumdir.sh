@@ -1,13 +1,18 @@
 #!/bin/bash
+DIR=$1
 
 WORK_DIR=$(pwd)
-MD5_FILE=$(pwd)/$(basename $1).md5
+MD5_FILE=$(pwd)/$(basename ${DIR}).md5
 
 function md5sumdir ( )
 {
-  echo ===$(basename $1)==== >> $MD5_FILE
-
   cd $1
+  
+  if [ ! 0 -eq $(ls -p | grep -v / | wc -l) ]
+  then
+    echo ===${SUB_DIR}==== | sed 's/^===[/]/===/g' >> $MD5_FILE
+  fi
+  
   for f in $(ls -la | grep ^- | awk ' { print $9 } ')
   do
     echo $f
@@ -16,7 +21,9 @@ function md5sumdir ( )
 
   for dir in $(ls -la | grep ^d | awk ' { print $9 } ' | sed '/^[.]/d')
   do
+    SUB_DIR=${SUB_DIR}/$dir
     md5sumdir $dir
+    SUB_DIR=$(dirname "${SUB_DIR}" | sed 's/^[.]//g')
   done
 
   cd ..
@@ -31,7 +38,7 @@ then
   rm $MD5_FILE
 fi
 
-md5sumdir $1
-echo Result $1 $(md5sum $MD5_FILE | awk ' { print $1} ')
-
-echo 12345678 | sudo -S cp $MD5_FILE $(dirname $1)
+SUB_DIR=$(basename ${DIR})
+md5sumdir ${DIR}
+echo Result ${DIR} $(md5sum ${MD5_FILE} | awk ' { print $1 } ')
+echo 12345678 | sudo -S cp ${MD5_FILE} $(dirname ${DIR})
