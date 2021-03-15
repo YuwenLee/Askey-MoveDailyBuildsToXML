@@ -65,3 +65,11 @@ LS_CMD="ls -lta | grep ^d | awk ' { print \$9 } ' | grep -e [.][0-9][0-9][0-9][0
 KEEP_CNT=50
 mv_db_toManifests ${DAILY_BUILD_DIR} "${LS_CMD}" ${KEEP_CNT}
 ~/ImageBackup/CDR7011_toManifests.sh ${DAILY_BUILD_DIR}/toManifests ${MANIFESTS_DIR} >> ~/log/toManifests.log
+
+# CDR9010-SKU3
+DAILY_BUILD_DIR=${MOUNT_POINT}/DailyBuilds/ROM_Code/CDR9010-D307-SKU3
+MANIFESTS_DIR=${MOUNT_POINT}/DailyBuilds/Manifests/CDR9010-D307-SKU3
+LS_CMD="ls -lta | grep ^d | awk ' { print \$9 } ' | grep -e [.][0-9][0-9][0-9][0-9]*_"
+KEEP_CNT=140
+mv_db_toManifests ${DAILY_BUILD_DIR} "${LS_CMD}" ${KEEP_CNT}
+~/ImageBackup/CDR9010-SKU3_toManifests.sh ${DAILY_BUILD_DIR}/toManifests ${MANIFESTS_DIR} >> ~/log/toManifests.log
