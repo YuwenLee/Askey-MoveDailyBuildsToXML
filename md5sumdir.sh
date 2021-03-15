@@ -1,5 +1,12 @@
 #!/bin/bash
 DIR=$1
+PASSWD=$2
+SUDO=
+
+if [ ! "${PASSWD}" = "" ]
+then
+  SUDO="echo ${PASSWD} | sudo -S"
+fi
 
 WORK_DIR=$(pwd)
 MD5_FILE=$(pwd)/$(basename ${DIR}).md5
@@ -41,4 +48,4 @@ fi
 SUB_DIR=$(basename ${DIR})
 md5sumdir ${DIR}
 echo Result ${DIR} $(md5sum ${MD5_FILE} | awk ' { print $1 } ')
-echo 12345678 | sudo -S cp ${MD5_FILE} $(dirname ${DIR})
+#echo 12345678 | sudo -S cp ${MD5_FILE} $(dirname ${DIR})
