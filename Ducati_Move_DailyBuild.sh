@@ -6,7 +6,7 @@
 DB_PATH=/home/jenkins/docker/var/lib/jenkins/CDR9010/share_folder/CDR9010-D307
 
 LS_CMD="ls -t ${DB_PATH} | grep -e [.][0-9][0-9][0-9][0-9]_"
-KEEP_CNT=108
+KEEP_CNT=105
 
 WORK_DIR=$(dirname $0)
 echo
@@ -26,4 +26,4 @@ do
   echo $d
   echo 12345678 | sudo -S mv ${DB_PATH}/${d}  ${DB_PATH}/toBeMoved
 done
-${WORK_DIR}/md5sumdirs.sh ${DB_PATH}/toBeMoved
+${WORK_DIR}/md5sumdirs.sh ${DB_PATH}/toBeMoved 12345678
