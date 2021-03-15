@@ -6,23 +6,21 @@
 DB_PATH=/home/jenkins/docker/var/lib/jenkins/CDR9010/share_folder/CDR9010-D307
 
 LS_CMD="ls -t ${DB_PATH} | grep -e [.][0-9][0-9][0-9][0-9]_"
-KEEP_CNT=115
+KEEP_CNT=108
 
-WORK_DIR=$(pwd)
+WORK_DIR=$(dirname $0)
 echo
 echo $(date +%Y-%m-%d-%H:%M)
+echo = Work at ${WORK_DIR}
 
 if [ ! -d ${DB_PATH} ]
 then
-  echo = Work at ${WORK_DIR}
   echo = ERROR: 
   echo = ${DB_PATH} \<= does not exist!
   exit 1
 fi
-set -e
 
-mkdir -p ${DB_PATH}/toBeMoved
-
+echo 12345678 | sudo -S mkdir -p ${DB_PATH}/toBeMoved
 for d in $(bash -c "diff <(${LS_CMD}) <(${LS_CMD} | head -${KEEP_CNT})" | grep ^"<" | sed 's/<//g')
 do
   echo $d
