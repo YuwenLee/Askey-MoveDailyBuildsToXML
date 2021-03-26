@@ -6,7 +6,7 @@
 DB_PATH=/home/jenkins/docker/var/lib/jenkins/CDR9010/share_folder/CDR9010-D307
 
 LS_CMD="ls -t ${DB_PATH} | grep -e [.][0-9][0-9][0-9][0-9]_"
-KEEP_CNT=105
+KEEP_CNT=100
 
 WORK_DIR=$(dirname $0)
 echo
