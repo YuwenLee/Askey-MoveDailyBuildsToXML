@@ -40,9 +40,10 @@ echo "= Work at $WORK_DIR"
 echo "= Scan    $1"
 echo "= Output  $MD5_FILE"
 
-if [ -f $MD5_FILE ]
+if [ -e $MD5_FILE ]
 then
-  rm $MD5_FILE
+  echo ERROR: $MD5_FILE exists!
+  exit 1
 fi
 
 SUB_DIR=$(basename ${DIR})
