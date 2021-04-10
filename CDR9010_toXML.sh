@@ -1,11 +1,9 @@
 #!/bin/bash
 
 # File:    CDR9010_toXML.sh
-# Updated: 2021-03-09
+# Updated: 2021-04-09
 
 MOUNT_POINT=/media/ywlee/MyBookDuo # Where the Backup DISK is mounted
-MANIFESTS_DIR=${MOUNT_POINT}/DailyBuilds/Manifests/CDR9010-D307-SKU4/toXML # The path of the manifests dir
-XML_DIR=${MOUNT_POINT}/DailyBuilds/xml/CDR9010-D307-SKU4 # The path of the xml dir
 
 function clone_to_dest ()
 {
@@ -26,9 +24,9 @@ function clone_to_dest ()
 
 function remove_files ()
 {
-  VER=$(basename $(pwd) | awk -F"_" '{ print $3 }' | sed 's/^V//g' | sed 's/\([0-9][0-9][0-9][0-9]\).*$/\1/g') > /dev/null
+  VER=$(basename $(pwd) | sed 's/.*\([0-9][0-9]*[.][0-9][0-9]*[.][0-9][0-9]*[.][0-9][0-9]*[.][0-9][0-9]*\).*/\1/g') > /dev/null
   FILES=$(find ./ -name "${VER}*Images.zip")
-  FILES=$FILES" "$(find ./ -name "adb2b-target_files*${VER}.zip")  
+  FILES=$FILES" "$(find ./ -name "*target_files*${VER}.zip")
   for f in $FILES
   do
     rm $f
@@ -45,7 +43,33 @@ function remove_files ()
 # Actions start here
 #
 
-for BUILD in $(ls -la ${MANIFESTS_DIR} | grep ^d | grep CDR | awk ' { print $9 } ') 
+# SKU3
+MANIFESTS_DIR=${MOUNT_POINT}/DailyBuilds/Manifests/CDR9010-D307-SKU3/toXML # The path of the manifests dir
+XML_DIR=${MOUNT_POINT}/DailyBuilds/xml/CDR9010-D307-SKU3 # The path of the xml dir
+
+for BUILD in $(ls -la ${MANIFESTS_DIR} | grep ^d | grep -e [0-9][.] | awk ' { print $9 } ')
+do
+  clone_to_dest ${MANIFESTS_DIR}/${BUILD} ${XML_DIR}
+  if [ -e ${MANIFESTS_DIR}/${BUILD}.md5 ]
+  then
+    clone_to_dest ${MANIFESTS_DIR}/${BUILD}.md5 ${XML_DIR}
+  fi
+
+  cd ${XML_DIR}/${BUILD}
+  remove_files
+  cd - > /dev/null
+  echo
+  echo $(date +%Y-%m-%d-%H:%M)
+  echo == Remove ${MANIFESTS_DIR}/${BUILD}
+  rm -rf ${MANIFESTS_DIR}/${BUILD}
+  rm -f ${MANIFESTS_DIR}/${BUILD}.md5
+done
+
+# SKU4
+MANIFESTS_DIR=${MOUNT_POINT}/DailyBuilds/Manifests/CDR9010-D307-SKU4/toXML # The path of the manifests dir
+XML_DIR=${MOUNT_POINT}/DailyBuilds/xml/CDR9010-D307-SKU4 # The path of the xml dir
+
+for BUILD in $(ls -la ${MANIFESTS_DIR} | grep ^d | grep -e [0-9][.] | awk ' { print $9 } ')
 do
   clone_to_dest ${MANIFESTS_DIR}/${BUILD} ${XML_DIR}
   if [ -e ${MANIFESTS_DIR}/${BUILD}.md5 ]

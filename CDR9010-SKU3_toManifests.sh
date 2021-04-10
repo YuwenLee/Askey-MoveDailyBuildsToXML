@@ -1,13 +1,10 @@
 #!/bin/bash
 
 #
-# Updated: 2021-03-15
+# Updated: 2021-04-09
 #
-
-MOUNT_POINT=/media/ywlee/MyBookDuo # Where the Backup DISK is mounted
-
-FROM_DIR=${MOUNT_POINT}/DailyBuilds/ROM_Code/CDR9010-D307-SKU3/toManifests
-DEST_DIR=${MOUNT_POINT}/DailyBuilds/Manifests/CDR9010-D307-SKU3
+FROM_DIR=$1 #${MOUNT_POINT}/DailyBuilds/ROM_Code/CDR9010-D307-SKU3/toManifests
+DEST_DIR=$2 #${MOUNT_POINT}/DailyBuilds/Manifests/CDR9010-D307-SKU3
 
 function print_example ()
 {
@@ -59,12 +56,18 @@ function rm_update ()
   cd $_DIR
   
   # Remove Incremental OTA files
-  echo Removed OTA_Delta
-  rm -rf OTA_Delta
+  for d in $(find ./ -type d -name OTA_Delta)
+  do
+    echo Remove $d
+    rm -rf $d
+  done
 
   # Remve Full OTA file
-  echo Removed OTA_Full
-  rm -rf OTA_Full
+  for d in $(find ./ -type d -name OTA_Full)
+  do
+    echo Remove $d
+    rm -rf $d
+  done
     
   cd - > /dev/null
 }
@@ -80,13 +83,24 @@ function rm_debug ()
   cd $_DIR
 
   # Remove Debugging files
-  echo Removed DEBUG
-  rm -rf DEBUG
-  echo Removed disableSeLinux
-  rm -rf disableSeLinux
-  echo Removed enableDownLoadMode
-  rm -rf enableDownLoadMode
+  for d in $(find ./ -type d -name DEBUG)
+  do
+    echo Remove $d
+    rm -rf $d
+  done
   
+  for d in $(find ./ -type d -name disableSeLinux)
+  do
+    echo Remove $d
+    rm -rf $d
+  done
+
+  for d in $(find ./ -type d -name enableDownLoadMode)
+  do
+    echo Remove $d
+    rm -rf $d
+  done
+
   cd - > /dev/null
 }
 
@@ -105,11 +119,13 @@ do
     if [ $? -eq 0 ]
     then
       echo $(date +%Y-%m-%d-%H:%M)
-      echo == $BUILD.md5 had been moved from $FROM_DIR to $DEST_DIR
+      echo == Move $BUILD.md5
+      echo == From $FROM_DIR to $DEST_DIR
       rm $FROM_DIR/$BUILD.md5
     else
       echo $(date +%Y-%m-%d-%H:%M)
-      echo == $FROM_DIR/$BUILD.md5 is not moved
+      echo == ERROR: Failed to move file
+      echo == $FROM_DIR/$BUILD.md5
       rm $DEST_DIR/$BUILD.md5
     fi
   fi
@@ -119,13 +135,15 @@ do
   then
     rm -rf $FROM_DIR/$BUILD
     echo $(date +%Y-%m-%d-%H:%M)
-    echo == $BUILD had been moved from $FROM_DIR to $DEST_DIR
+    echo == Move $BUILD
+    echo == From $FROM_DIR to $DEST_DIR
     rm_update $DEST_DIR/$BUILD
     rm_debug  $DEST_DIR/$BUILD
     echo
   else
     echo $(date +%Y-%m-%d-%H:%M)
-    echo == $FROM_DIR/$BUILD is not moved
+    echo == ERROR: Failed to move dir
+    echo == $FROM_DIR/$BUILD
     rm -rf $DEST_DIR/$BUILD
     echo
   fi
