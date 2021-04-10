@@ -2,7 +2,7 @@
 
 #
 # File:    Move_DailyBuild_to_Manifest.sh
-# Updated: 2021-03-09
+# Updated: 2021-04-09
 
 MOUNT_POINT=/media/ywlee/MyBookDuo # Where the Backup DISK is mounted
 
@@ -70,7 +70,7 @@ mv_db_toManifests ${DAILY_BUILD_DIR} "${LS_CMD}" ${KEEP_CNT}
 DAILY_BUILD_DIR=${MOUNT_POINT}/DailyBuilds/ROM_Code/CDR9010-D307-SKU3
 MANIFESTS_DIR=${MOUNT_POINT}/DailyBuilds/Manifests/CDR9010-D307-SKU3
 LS_CMD="ls -lta | grep ^d | awk ' { print \$9 } ' | grep -e [.][0-9][0-9][0-9][0-9]*_"
-KEEP_CNT=140
+KEEP_CNT=110
 mv_db_toManifests ${DAILY_BUILD_DIR} "${LS_CMD}" ${KEEP_CNT}
 ~/ImageBackup/CDR9010-SKU3_toManifests.sh ${DAILY_BUILD_DIR}/toManifests ${MANIFESTS_DIR} >> ~/log/toManifests.log
 
@@ -78,6 +78,6 @@ mv_db_toManifests ${DAILY_BUILD_DIR} "${LS_CMD}" ${KEEP_CNT}
 DAILY_BUILD_DIR=${MOUNT_POINT}/DailyBuilds/ROM_Code/CDR9010-D307-Hitachi/SHIP
 MANIFESTS_DIR=${MOUNT_POINT}/DailyBuilds/Manifests/CDR9010-D307-Hitachi
 LS_CMD="ls -lta | grep ^d | awk ' { print \$9 } ' | grep -e [.][0-9][0-9][0-9][0-9]*_"
-KEEP_CNT=58
+KEEP_CNT=53
 mv_db_toManifests ${DAILY_BUILD_DIR} "${LS_CMD}" ${KEEP_CNT}
 ~/ImageBackup/CDR9010-HTC_toManifests.sh ${DAILY_BUILD_DIR}/toManifests ${MANIFESTS_DIR} >> ~/log/toManifests.log
